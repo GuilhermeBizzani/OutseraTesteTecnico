@@ -67,7 +67,7 @@ OutseraTesteTecnico/
 
 ```bash
 # Clone o repositório
-git clone <url-do-repositorio>
+git clone https://github.com/GuilhermeBizzani/OutseraTesteTecnico
 cd OutseraTesteTecnico
 
 # Instale as dependências
