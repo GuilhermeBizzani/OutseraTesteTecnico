@@ -1,15 +1,13 @@
 import request from 'supertest';
 import { app } from '../../src/index';
-import { setupTestDatabase, closeTestDatabase, getSampleMovies } from '../helpers/testDb';
+import { setupTestDatabase, closeTestDatabase, getMoviesFromCSVFile } from '../helpers/testDb';
 
 describe('GET /movies/producers-intervals', () => {
   beforeAll(async () => {
-    // Set up database with sample data
-    await setupTestDatabase(getSampleMovies());
+    await setupTestDatabase(getMoviesFromCSVFile());
   });
 
   afterAll(async () => {
-    // Clean up database
     await closeTestDatabase();
   });
 
@@ -38,16 +36,22 @@ describe('GET /movies/producers-intervals', () => {
     }
   });
 
-  it('should calculate intervals correctly for sample data', async () => {
+  it('should calculate intervals correctly for CSV file', async () => {
     const response = await request(app)
       .get('/movies/producers-intervals')
       .expect(200);
 
     const { min, max } = response.body;
 
-    // Intervalo min deve ser 1 e max deve ser 13
+    // Os resultados devem bater exatamente com o exemplo passado no requisito do teste
+    expect(min[0].producer).toEqual('Joel Silver');
     expect(min[0].interval).toEqual(1);
+    expect(min[0].previousWin).toEqual(1990);
+    expect(min[0].followingWin).toEqual(1991);
+    expect(max[0].producer).toEqual('Matthew Vaughn');
     expect(max[0].interval).toEqual(13);
+    expect(max[0].previousWin).toEqual(2002);
+    expect(max[0].followingWin).toEqual(2015);
   });
 
   it('should only include producers with multiple wins', async () => {

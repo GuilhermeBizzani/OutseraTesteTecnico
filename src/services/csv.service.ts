@@ -8,7 +8,7 @@ import { SERVER_ROOT } from '../constants';
 /**
  * Lê o arquivo CSV e converte cada linha em um objeto do tipo Movie
  */
-const parseCSV = (filePath: string): Movie[] => {
+export const parseCSV = (filePath: string): Movie[] => {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
 
   const records = parse(fileContent, {
